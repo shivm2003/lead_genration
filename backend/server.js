@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 require('dotenv').config();
 const { pool, initializeDatabase } = require('./db');
@@ -22,9 +23,9 @@ app.post('/api/leads', async (req, res) => {
   try {
     const { fullName, email, phone, loanAmount, purpose } = req.body;
 
-    // Validate simple required fields
-    if (!fullName || !email || !phone || !loanAmount || !purpose) {
-      return res.status(400).json({ error: 'All fields are required.' });
+    // Validate required fields (email is optional)
+    if (!fullName || !phone || !loanAmount || !purpose) {
+      return res.status(400).json({ error: 'Name, phone, loan amount, and loan type are required.' });
     }
 
     const insertQuery = `
@@ -48,6 +49,14 @@ app.post('/api/leads', async (req, res) => {
   }
 });
 
+// Serve static frontend files in production
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// Catch-all route for React Router (must be AFTER API routes)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
+
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

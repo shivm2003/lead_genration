@@ -13,7 +13,7 @@ function Landing() {
     
     // Simulate API call or directly submit a quick lead
     try {
-      const response = await fetch('http://localhost:3000/api/leads', {
+      const response = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -37,6 +37,11 @@ function Landing() {
 
   return (
     <div className="fade-in">
+      {/* Top Promotional Banner */}
+      <div style={{ width: '100%', overflow: 'hidden', backgroundColor: '#EEF2FF' }}>
+        <img src="/banner.png" alt="Promotional Banner" style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }} />
+      </div>
+
       {/* 1. Hero Section with Split Layout & Mini Form */}
       <section className="hero" style={{ padding: '60px 0' }}>
         <div className="container hero-split">

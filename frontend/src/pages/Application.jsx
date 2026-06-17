@@ -1,15 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+const LOAN_TYPES = [
+  { value: 'Home Loan', icon: '🏠', desc: 'Buy your dream home' },
+  { value: 'Loan Against Property', icon: '🏢', desc: 'Unlock property value' },
+  { value: 'Personal Loan', icon: '👤', desc: 'For personal needs' },
+  { value: 'Business Loan', icon: '💼', desc: 'Grow your business' },
+  { value: 'Vehicle Loan', icon: '🚗', desc: 'Own your vehicle' },
+  { value: 'Education Loan', icon: '🎓', desc: 'Invest in education' },
+  { value: 'Gold Loan', icon: '✨', desc: 'Pledge gold, get cash' },
+];
+
 function Application() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     phone: '',
     loanAmount: '',
-    purpose: ''
+    purpose: '',
+    employment: '',
+    city: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -21,11 +34,20 @@ function Application() {
         loanAmount: location.state.prefilledAmount || prev.loanAmount,
         purpose: location.state.prefilledPurpose || prev.purpose
       }));
+      // If purpose is prefilled, skip to step 2
+      if (location.state.prefilledPurpose) {
+        setStep(2);
+      }
     }
   }, [location]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const selectLoanType = (type) => {
+    setFormData({ ...formData, purpose: type });
+    setStep(2);
   };
 
   const handleSubmit = async (e) => {
@@ -34,11 +56,9 @@ function Application() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/leads', {
+      const response = await fetch('/api/leads', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
 
@@ -57,81 +77,319 @@ function Application() {
   };
 
   return (
-    <div className="container fade-in" style={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-      <div className="glass-card">
-        <h2>Loan Application</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="fullName">Full Name</label>
-            <input 
-              type="text" 
-              name="fullName" 
-              id="fullName" 
-              placeholder="Rahul Sharma" 
-              value={formData.fullName}
-              onChange={handleChange}
-              required 
-            />
+    <div className="fade-in">
+      {/* Hero Banner */}
+      <section style={{
+        background: 'linear-gradient(135deg, #1E3A5F 0%, #4F46E5 100%)',
+        color: '#fff',
+        padding: '50px 0 35px',
+        textAlign: 'center',
+      }}>
+        <div className="container">
+          <h1 style={{ fontSize: '40px', fontWeight: 800, marginBottom: '12px' }}>
+            📝 Apply for a Loan
+          </h1>
+          <p style={{ fontSize: '18px', opacity: 0.85, maxWidth: '550px', margin: '0 auto' }}>
+            Complete a quick application and get matched with the best offers from 50+ lending partners.
+          </p>
+
+          {/* Step Indicator */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '28px' }}>
+            {[1, 2].map(s => (
+              <div key={s} style={{
+                width: s === step ? '48px' : '32px',
+                height: '6px',
+                borderRadius: '99px',
+                background: s === step ? '#F59E0B' : 'rgba(255,255,255,0.3)',
+                transition: 'all 0.3s ease',
+              }} />
+            ))}
           </div>
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <input 
-              type="email" 
-              name="email" 
-              id="email" 
-              placeholder="rahul.sharma@gmail.com" 
-              value={formData.email}
-              onChange={handleChange}
-              required 
-            />
+        </div>
+      </section>
+
+      <section className="section" style={{ backgroundColor: '#F0F4FF', minHeight: '500px' }}>
+        <div className="container" style={{ maxWidth: '800px', margin: '0 auto' }}>
+
+          {/* ======= STEP 1: Choose Loan Type ======= */}
+          {step === 1 && (
+            <div className="fade-in">
+              <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+                <h2 style={{ fontSize: '28px', fontWeight: 700, color: '#1E3A5F' }}>
+                  What type of loan are you looking for?
+                </h2>
+                <p style={{ color: '#6B7280', marginTop: '8px' }}>
+                  Select one to continue with your application.
+                </p>
+              </div>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                gap: '16px',
+              }}>
+                {LOAN_TYPES.map(loan => (
+                  <button
+                    key={loan.value}
+                    onClick={() => selectLoanType(loan.value)}
+                    style={{
+                      background: formData.purpose === loan.value
+                        ? 'linear-gradient(135deg, #4F46E5, #7C3AED)'
+                        : '#fff',
+                      color: formData.purpose === loan.value ? '#fff' : '#1E3A5F',
+                      border: formData.purpose === loan.value
+                        ? '2px solid #4F46E5'
+                        : '2px solid #E5E7EB',
+                      borderRadius: '16px',
+                      padding: '24px 16px',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                      transition: 'all 0.25s ease',
+                      boxShadow: formData.purpose === loan.value
+                        ? '0 8px 24px rgba(79,70,229,0.3)'
+                        : '0 2px 8px rgba(0,0,0,0.04)',
+                    }}
+                    onMouseEnter={e => {
+                      if (formData.purpose !== loan.value) {
+                        e.currentTarget.style.borderColor = '#A5B4FC';
+                        e.currentTarget.style.transform = 'translateY(-3px)';
+                        e.currentTarget.style.boxShadow = '0 8px 20px rgba(79,70,229,0.12)';
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (formData.purpose !== loan.value) {
+                        e.currentTarget.style.borderColor = '#E5E7EB';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+                      }
+                    }}
+                  >
+                    <div style={{ fontSize: '36px', marginBottom: '8px' }}>{loan.icon}</div>
+                    <div style={{ fontWeight: 700, fontSize: '16px' }}>{loan.value}</div>
+                    <div style={{
+                      fontSize: '12px',
+                      marginTop: '4px',
+                      opacity: 0.7,
+                      color: formData.purpose === loan.value ? '#E0E7FF' : '#6B7280',
+                    }}>{loan.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ======= STEP 2: Fill Details ======= */}
+          {step === 2 && (
+            <div className="fade-in">
+              {/* Selected Loan Badge */}
+              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'linear-gradient(135deg, #4F46E5, #7C3AED)',
+                  color: '#fff',
+                  padding: '10px 24px',
+                  borderRadius: '99px',
+                  fontWeight: 700,
+                  fontSize: '15px',
+                  cursor: 'pointer',
+                }} onClick={() => setStep(1)}>
+                  {LOAN_TYPES.find(l => l.value === formData.purpose)?.icon} {formData.purpose}
+                  <span style={{ opacity: 0.7, fontSize: '13px' }}>✏️ Change</span>
+                </span>
+              </div>
+
+              <div style={{
+                background: '#fff',
+                borderRadius: '20px',
+                padding: '40px',
+                boxShadow: '0 10px 40px rgba(0,0,0,0.08)',
+                border: '1px solid #E5E7EB',
+              }}>
+                <h2 style={{ fontSize: '24px', fontWeight: 700, color: '#1E3A5F', marginBottom: '6px' }}>
+                  Your Details
+                </h2>
+                <p style={{ color: '#6B7280', marginBottom: '28px', fontSize: '14px' }}>
+                  We just need a few details to match you with the best lenders.
+                </p>
+
+                <form onSubmit={handleSubmit}>
+                  {/* Row 1: Name + Phone */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                    <div className="form-group">
+                      <label htmlFor="fullName" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '18px' }}>👤</span> Full Name <span style={{ color: '#EF4444' }}>*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="fullName"
+                        id="fullName"
+                        placeholder="Rahul Sharma"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="phone" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '18px' }}>📱</span> Mobile Number <span style={{ color: '#EF4444' }}>*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        id="phone"
+                        placeholder="+91 98765 43210"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 2: Email + City */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                    <div className="form-group">
+                      <label htmlFor="email" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '18px' }}>📧</span> Email <span style={{ color: '#9CA3AF', fontSize: '12px' }}>(Optional)</span>
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="rahul@gmail.com"
+                        value={formData.email}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="city" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '18px' }}>📍</span> City
+                      </label>
+                      <input
+                        type="text"
+                        name="city"
+                        id="city"
+                        placeholder="Mumbai"
+                        value={formData.city}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 3: Loan Amount + Employment */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                    <div className="form-group">
+                      <label htmlFor="loanAmount" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '18px' }}>💰</span> Desired Loan Amount (₹) <span style={{ color: '#EF4444' }}>*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="loanAmount"
+                        id="loanAmount"
+                        placeholder="5,00,000"
+                        value={formData.loanAmount}
+                        onChange={handleChange}
+                        required
+                        min="1000"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="employment" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '18px' }}>🏢</span> Employment Type
+                      </label>
+                      <select
+                        name="employment"
+                        id="employment"
+                        value={formData.employment}
+                        onChange={handleChange}
+                      >
+                        <option value="">Select...</option>
+                        <option value="Salaried">Salaried</option>
+                        <option value="Self-Employed">Self-Employed</option>
+                        <option value="Business Owner">Business Owner</option>
+                        <option value="Professional">Professional (Doctor/CA/etc.)</option>
+                        <option value="Student">Student</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {error && (
+                    <div style={{
+                      background: '#FEF2F2',
+                      color: '#EF4444',
+                      padding: '12px 16px',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      marginBottom: '16px',
+                      border: '1px solid #FECACA',
+                    }}>
+                      ⚠️ {error}
+                    </div>
+                  )}
+
+                  <button type="submit" className="btn btn-block" disabled={loading} style={{
+                    fontSize: '18px',
+                    padding: '16px',
+                    borderRadius: '12px',
+                    background: loading
+                      ? '#9CA3AF'
+                      : 'linear-gradient(135deg, #10B981, #059669)',
+                    color: '#fff',
+                    fontWeight: 700,
+                    border: 'none',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    marginTop: '8px',
+                  }}>
+                    {loading ? '⏳ Submitting...' : '✅ Submit Application'}
+                  </button>
+                </form>
+
+                <p style={{ fontSize: '12px', color: '#9CA3AF', marginTop: '16px', textAlign: 'center' }}>
+                  🔒 Your information is encrypted and secure. We never share your data without consent.
+                </p>
+              </div>
+
+              {/* Go Back link */}
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <button onClick={() => setStep(1)} style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#4F46E5',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontSize: '15px',
+                  textDecoration: 'underline',
+                }}>
+                  ← Back to Loan Type Selection
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Trust Strip */}
+      <div style={{
+        background: '#fff',
+        padding: '30px 0',
+        borderTop: '1px solid #E5E7EB',
+      }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6B7280', fontWeight: 600, fontSize: '14px' }}>
+            <span style={{ fontSize: '22px' }}>⚡</span> Instant Approval
           </div>
-          <div className="form-group">
-            <label htmlFor="phone">Phone Number</label>
-            <input 
-              type="tel" 
-              name="phone" 
-              id="phone" 
-              placeholder="+91 98765 43210" 
-              value={formData.phone}
-              onChange={handleChange}
-              required 
-            />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6B7280', fontWeight: 600, fontSize: '14px' }}>
+            <span style={{ fontSize: '22px' }}>🛡️</span> Bank-Grade Security
           </div>
-          <div className="form-group">
-            <label htmlFor="loanAmount">Desired Loan Amount (₹)</label>
-            <input 
-              type="number" 
-              name="loanAmount" 
-              id="loanAmount" 
-              placeholder="500000" 
-              value={formData.loanAmount}
-              onChange={handleChange}
-              required 
-              min="1000" 
-            />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6B7280', fontWeight: 600, fontSize: '14px' }}>
+            <span style={{ fontSize: '22px' }}>📱</span> 100% Paperless
           </div>
-          <div className="form-group">
-            <label htmlFor="purpose">Loan Purpose</label>
-            <select 
-              name="purpose" 
-              id="purpose" 
-              value={formData.purpose}
-              onChange={handleChange}
-              required
-            >
-              <option value="" disabled>Select a purpose...</option>
-              <option value="Personal">Personal</option>
-              <option value="Home">Home</option>
-              <option value="Auto">Auto</option>
-              <option value="Business">Business</option>
-              <option value="Education">Education</option>
-            </select>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6B7280', fontWeight: 600, fontSize: '14px' }}>
+            <span style={{ fontSize: '22px' }}>💰</span> Lowest EMIs
           </div>
-          <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
-            {loading ? 'Submitting...' : 'Submit Application'}
-          </button>
-        </form>
-        {error && <div style={{ color: '#EF4444', marginTop: '16px', textAlign: 'center' }}>{error}</div>}
+        </div>
       </div>
     </div>
   );

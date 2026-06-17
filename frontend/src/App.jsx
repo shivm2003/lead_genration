@@ -12,8 +12,8 @@ function App() {
     <>
       <nav className="navbar">
         <div className="container nav-content">
-          <Link to="/" className="logo">
-            <span className="logo-accent">Loan</span>solutions
+          <Link to="/">
+            <img src="/Logo.png" alt="Loansolutions Logo" className="logo-img" />
           </Link>
           <div className="nav-links">
             <Link to="/">Home</Link>
@@ -36,7 +36,8 @@ function App() {
       </main>
 
       <footer className="footer">
-        <div className="container footer-content">
+        <div className="container footer-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <img src="/Logo.png" alt="Loansolutions Logo" style={{ height: '60px', marginBottom: '16px', opacity: 0.9 }} />
           <p>&copy; 2026 Loansolutions, a subdomain of EverythingRental. All rights reserved.</p>
         </div>
       </footer>
