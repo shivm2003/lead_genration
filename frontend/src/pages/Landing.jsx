@@ -14,7 +14,7 @@ const LOAN_PRODUCTS = [
   {
     id: '01', icon: '👤', title: 'Personal Loan',
     blurb: 'Quick funds for medical emergencies, weddings, or personal milestones — no collateral required.',
-    rate: '10.50% p.a.', amount: '₹50K – ₹40L', tenure: 'Up to 5 yrs', to: '/personal',
+    rate: '10.50% p.a.', amount: '₹50K – ₹40L', tenure: 'Up to 7 yrs', to: '/personal',
   },
   {
     id: '02', icon: '🏠', title: 'Home Loan',
@@ -29,7 +29,7 @@ const LOAN_PRODUCTS = [
   {
     id: '04', icon: '🏢', title: 'Loan Against Property',
     blurb: 'Unlock the value of property you already own for larger amounts at lower rates.',
-    rate: '9.25% p.a.', amount: '₹10L – ₹10Cr', tenure: 'Up to 15 yrs', to: '/lap',
+    rate: '9.25% p.a.', amount: '₹5L – ₹10Cr', tenure: 'Up to 20 yrs', to: '/lap',
   },
   {
     id: '05', icon: '🚗', title: 'Vehicle Loan',
@@ -160,7 +160,7 @@ function Landing() {
       <section className="ls-section ls-partners">
         <div className="ls-container">
           <div className="ls-partners-head">
-            <h2>Backed by 18+ banking &amp; NBFC partners</h2>
+            <h2>Backed by 50+ banking &amp; NBFC partners</h2>
             <p>Every offer you see is sourced directly from a regulated lending partner — never a middleman markup.</p>
           </div>
           <div className="ls-stamp-wall">
@@ -296,7 +296,7 @@ function Landing() {
             <div className="ls-elig-card">
               <h4>Salaried</h4>
               <ul>
-                <li>21–58 years of age</li>
+                <li>18–65 years of age</li>
                 <li>Minimum net monthly income of ₹20,000</li>
                 <li>At least 1 year in current employment</li>
                 <li>Active salary account for 3+ months</li>
@@ -305,11 +305,29 @@ function Landing() {
             <div className="ls-elig-card">
               <h4>Self-employed</h4>
               <ul>
-                <li>23–65 years of age</li>
+                <li>18–65 years of age</li>
                 <li>Business vintage of 2+ years</li>
                 <li>Minimum annual turnover as per lender norms</li>
-                <li>ITR filed for the last 2 financial years</li>
+                <li>ITR or without filed for the last 2 financial years</li>
               </ul>
+            </div>
+            <div className="ls-elig-card">
+              <h4>Self-Employed No Income Proof</h4>
+              <ul>
+                <li>18–65 years of age</li>
+                <li>Business vintage of 1+ years</li>
+                <li>Minimum annual turnover as per lender norms</li>
+                <li>No Documents Needed</li>
+              </ul>
+            </div>                        
+            <div className="ls-elig-card">
+              <h4>Pensioner</h4>
+              <ul>
+                <li>40–70 years of age</li>
+                <li>Minimum net monthly pension income of ₹20,000</li>
+                <li>Banking Pension statement</li>
+                <li>Active pension account.</li>
+                </ul>
             </div>
           </div>
         </div>
@@ -376,7 +394,7 @@ function Landing() {
       <section className="ls-stats">
         <div className="ls-container ls-stats-grid">
           <div className="ls-stat"><h3>₹5Cr+</h3><p>Loans disbursed</p></div>
-          <div className="ls-stat"><h3>18+</h3><p>Banking &amp; NBFC partners</p></div>
+          <div className="ls-stat"><h3>50+</h3><p>Banking &amp; NBFC partners</p></div>
           <div className="ls-stat"><h3>10K+</h3><p>Happy customers</p></div>
           <div className="ls-stat"><h3>24 hrs</h3><p>Average decision time</p></div>
         </div>
@@ -392,13 +410,7 @@ function Landing() {
           <a href="#quick-phone" className="ls-btn ls-btn--gold ls-btn--lg">Check eligibility now</a>
         </div>
       </section>
-
-      {/* COMPLIANCE NOTE */}
-      <p className="ls-disclosure">
-        India Shelter is a digital lending marketplace. Loans are originated and disbursed by our RBI-regulated
-        banking and NBFC partners; we do not lend directly. Interest rates, fees and eligibility shown are
-        indicative and subject to the partner lender's final assessment.
-      </p>
+            
     </div>
   );
 }
