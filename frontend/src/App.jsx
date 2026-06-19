@@ -6,6 +6,9 @@ import Success from './pages/Success';
 import PersonalLoan from './pages/PersonalLoan';
 import BusinessLoan from './pages/BusinessLoan';
 import HomeLoan from './pages/HomeLoan';
+import LapLoan from './pages/LapLoan';
+import VehicleLoan from './pages/VehicleLoan';
+import GoldLoan from './pages/GoldLoan';
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
           <Route path="/personal" element={<PersonalLoan />} />
           <Route path="/business" element={<BusinessLoan />} />
           <Route path="/home" element={<HomeLoan />} />
+          <Route path="/lap" element={<LapLoan />} />
+          <Route path="/vehicle" element={<VehicleLoan />} />
+          <Route path="/gold" element={<GoldLoan />} />
         </Routes>
       </main>
 

@@ -1,0 +1,853 @@
+/* ============================================================
+   Landing.css — "Passbook Ledger" design system
+   Subject: an Indian loan-aggregator landing page.
+   Motif: bank passbook entries + ink approval stamps.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+.ls {
+    --ink: #16213E;
+    --ink-soft: #223158;
+    --paper: #FBF7EE;
+    --paper-line: #E2D9C3;
+    --gold: #C8932B;
+    --gold-deep: #A8761E;
+    --green: #1F6F54;
+    --charcoal: #23262B;
+    --cream-text: #F4EFE3;
+
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+
+    color: var(--charcoal);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+}
+
+.ls h1,
+.ls h2,
+.ls h3,
+.ls h4 {
+    font-family: var(--font-display);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.ls-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.ls-section {
+    padding: 88px 0;
+}
+
+.ls-section-head {
+    max-width: 620px;
+    margin: 0 0 48px;
+}
+
+.ls-section-head--tight {
+    margin-bottom: 28px;
+}
+
+.ls-section-head--light h2,
+.ls-section-head--light p {
+    color: var(--cream-text);
+}
+
+.ls-section-head h2 {
+    font-size: 34px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+}
+
+.ls-section-head p {
+    font-size: 16px;
+    color: #5C6470;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.ls-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ls-btn--gold {
+    background: var(--gold);
+    color: var(--ink);
+    padding: 14px 22px;
+    width: 100%;
+}
+
+.ls-btn--gold:hover {
+    background: var(--gold-deep);
+    transform: translateY(-1px);
+}
+
+.ls-btn--lg {
+    width: auto;
+    padding: 16px 32px;
+    font-size: 16px;
+}
+
+/* ---------------- HERO ---------------- */
+.ls-hero {
+    background: var(--ink);
+    padding: 80px 0 100px;
+    position: relative;
+}
+
+.ls-hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 56px;
+    align-items: start;
+}
+
+.ls-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--cream-text);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+}
+
+.ls-hero-title {
+    font-size: 50px;
+    line-height: 1.08;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.ls-hero-sub {
+    font-size: 17px;
+    line-height: 1.65;
+    color: #C7CCDA;
+    max-width: 500px;
+    margin-bottom: 28px;
+}
+
+.ls-hero-points {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ls-hero-points li {
+    color: #EDEFF4;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ls-tick {
+    color: var(--green);
+    background: rgba(31, 111, 84, 0.18);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex: none;
+}
+
+/* Eligibility stub — passbook ticket look */
+.ls-stub {
+    background: var(--paper);
+    border-radius: 18px;
+    padding: 32px 32px 26px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
+    position: relative;
+    border: 1px solid var(--paper-line);
+}
+
+.ls-stub-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--paper-line);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+}
+
+.ls-stub-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 600;
+}
+
+.ls-stub-no {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #8A8062;
+}
+
+.ls-stub-heading {
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 20px;
+}
+
+.ls-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ls-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6B6248;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.ls-field input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid var(--paper-line);
+    background: transparent;
+    padding: 8px 2px;
+    font-size: 16px;
+    font-family: var(--font-mono);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.ls-field input:focus {
+    border-color: var(--gold);
+}
+
+.ls-fineprint {
+    font-size: 11px;
+    color: #948A6C;
+    margin: 14px 0 0;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.ls-stub-perf {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    height: 20px;
+    background: repeating-radial-gradient(circle at 0 50%, transparent 0 4px, var(--ink) 4px 5px);
+    background-size: 20px 20px;
+    background-position: center;
+    opacity: 0.0;
+}
+
+/* ---------------- STAMP MOTIF (signature element) ---------------- */
+.ls-stamp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    border: 1.5px solid currentColor;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.ls-stamp--mini {
+    color: var(--gold);
+    font-size: 11px;
+    padding: 3px 10px;
+    letter-spacing: 0.04em;
+}
+
+.ls-stamp--bank {
+    color: var(--ink-soft);
+    border-color: #C9CDD8;
+    background: #fff;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    padding: 14px 10px;
+    text-align: center;
+    border-radius: 12px;
+    transform: rotate(var(--tilt, 0deg));
+    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.ls-stamp--bank:hover {
+    transform: rotate(0deg) translateY(-2px);
+    border-color: var(--gold);
+    color: var(--ink);
+}
+
+.ls-stamp--verify {
+    color: var(--green);
+    font-size: 10px;
+    padding: 3px 9px;
+    letter-spacing: 0.05em;
+}
+
+/* ---------------- PARTNERS ---------------- */
+.ls-partners {
+    background: #fff;
+}
+
+.ls-partners-head {
+    max-width: 640px;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.ls-partners-head h2 {
+    font-size: 30px;
+    color: var(--ink);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.ls-partners-head p {
+    color: #5C6470;
+    font-size: 15px;
+    margin: 0;
+}
+
+.ls-stamp-wall {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+}
+
+/* ---------------- VALUES ---------------- */
+.ls-values {
+    background: var(--paper);
+}
+
+.ls-values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.ls-value-card {
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    border-radius: 14px;
+    padding: 28px 22px;
+}
+
+.ls-value-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 14px;
+}
+
+.ls-value-card h4 {
+    font-size: 17px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.ls-value-card p {
+    font-size: 14px;
+    color: #5C6470;
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* ---------------- PRODUCTS ---------------- */
+.ls-products {
+    background: #fff;
+}
+
+.ls-products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.ls-product-card {
+    display: block;
+    border: 1px solid var(--paper-line);
+    border-radius: 16px;
+    padding: 26px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ls-product-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 32px -16px rgba(22, 33, 62, 0.18);
+}
+
+.ls-product-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.ls-product-no {
+    font-family: var(--font-mono);
+    color: #B5AC8E;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ls-product-icon {
+    font-size: 24px;
+}
+
+.ls-product-card h3 {
+    font-size: 19px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.ls-product-blurb {
+    font-size: 13.5px;
+    color: #5C6470;
+    line-height: 1.55;
+    margin: 0 0 18px;
+}
+
+.ls-product-specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 0 0 16px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--paper-line);
+}
+
+.ls-product-specs dt {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #9A9377;
+    margin-bottom: 3px;
+}
+
+.ls-product-specs dd {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 600;
+}
+
+.ls-product-cta {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--gold-deep);
+}
+
+/* ---------------- STEPS ---------------- */
+.ls-steps {
+    background: var(--ink);
+}
+
+.ls-steps-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.ls-step {
+    position: relative;
+}
+
+.ls-step-no {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.ls-step h4 {
+    color: #fff;
+    font-size: 19px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.ls-step p {
+    color: #B7BCCB;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.ls-step-line {
+    position: absolute;
+    top: 6px;
+    right: -16px;
+    width: 32px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    display: none;
+}
+
+@media (min-width: 760px) {
+    .ls-step-line {
+        display: block;
+    }
+}
+
+/* ---------------- LEDGER TABLE ---------------- */
+.ls-ledger {
+    background: var(--paper);
+}
+
+.ls-table-wrap {
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.ls-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ls-table th,
+.ls-table td {
+    text-align: left;
+    padding: 16px 22px;
+    font-size: 14px;
+}
+
+.ls-table thead th {
+    background: var(--ink);
+    color: var(--cream-text);
+    font-weight: 600;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.ls-table tbody tr:not(:last-child) td {
+    border-bottom: 1px dashed var(--paper-line);
+}
+
+.ls-table tbody td:first-child {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.ls-mono {
+    font-family: var(--font-mono);
+    color: #43403A;
+}
+
+/* ---------------- ELIGIBILITY ---------------- */
+.ls-eligibility {
+    background: #fff;
+}
+
+.ls-eligibility-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.4fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.ls-eligibility-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.ls-elig-card {
+    background: var(--paper);
+    border: 1px solid var(--paper-line);
+    border-radius: 14px;
+    padding: 26px;
+}
+
+.ls-elig-card h4 {
+    color: var(--ink);
+    font-size: 17px;
+    margin-bottom: 14px;
+    font-weight: 600;
+}
+
+.ls-elig-card ul {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.ls-elig-card li {
+    font-size: 14px;
+    color: #494533;
+    line-height: 1.5;
+}
+
+/* ---------------- TESTIMONIALS ---------------- */
+.ls-testimonials {
+    background: var(--paper);
+}
+
+.ls-testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.ls-testimonial-card {
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    border-radius: 14px;
+    padding: 26px;
+}
+
+.ls-testimonial-card p {
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0 0 18px;
+}
+
+.ls-testimonial-foot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #6B6248;
+}
+
+/* ---------------- FAQ ---------------- */
+.ls-faq {
+    background: #fff;
+}
+
+.ls-faq-list {
+    border-top: 1px solid var(--paper-line);
+}
+
+.ls-faq-item {
+    border-bottom: 1px solid var(--paper-line);
+}
+
+.ls-faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 20px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-family: var(--font-body);
+}
+
+.ls-faq-icon {
+    color: var(--gold-deep);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.ls-faq-answer {
+    font-size: 14.5px;
+    color: #5C6470;
+    line-height: 1.65;
+    margin: 0 0 22px;
+    max-width: 720px;
+}
+
+/* ---------------- STATS ---------------- */
+.ls-stats {
+    background: var(--ink-soft);
+    padding: 56px 0;
+}
+
+.ls-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+}
+
+.ls-stat h3 {
+    color: var(--gold);
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.ls-stat p {
+    color: #C7CCDA;
+    font-size: 13.5px;
+    margin: 0;
+}
+
+/* ---------------- FINAL CTA ---------------- */
+.ls-final-cta {
+    background: var(--gold);
+    padding: 56px 0;
+}
+
+.ls-final-cta-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.ls-final-cta h2 {
+    color: var(--ink);
+    font-size: 28px;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.ls-final-cta p {
+    color: #3D2F12;
+    margin: 0;
+    font-size: 15px;
+}
+
+.ls-final-cta .ls-btn--gold {
+    background: var(--ink);
+    color: #fff;
+}
+
+.ls-final-cta .ls-btn--gold:hover {
+    background: #0E1530;
+}
+
+/* ---------------- DISCLOSURE ---------------- */
+.ls-disclosure {
+    font-size: 12px;
+    color: #8A8896;
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+    line-height: 1.6;
+}
+
+/* ---------------- MOTION ---------------- */
+.fade-in {
+    animation: ls-fade 0.5s ease both;
+}
+
+@keyframes ls-fade {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fade-in {
+        animation: none;
+    }
+
+    .ls-product-card,
+    .ls-stamp--bank,
+    .ls-btn {
+        transition: none;
+    }
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 960px) {
+    .ls-hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ls-values-grid,
+    .ls-products-grid,
+    .ls-testimonial-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ls-stamp-wall {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .ls-eligibility-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ls-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .ls-hero-title {
+        font-size: 36px;
+    }
+
+    .ls-values-grid,
+    .ls-products-grid,
+    .ls-testimonial-grid,
+    .ls-eligibility-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .ls-stamp-wall {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ls-steps-row {
+        grid-template-columns: 1fr;
+    }
+
+    .ls-final-cta-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

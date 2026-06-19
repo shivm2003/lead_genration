@@ -264,7 +264,7 @@ function Application() {
                     </div>
                     <div className="form-group">
                       <label htmlFor="city" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ fontSize: '18px' }}>📍</span> City
+                        <span style={{ fontSize: '18px' }}>📍</span> Address
                       </label>
                       <input
                         type="text"
@@ -370,24 +370,28 @@ function Application() {
         </div>
       </section>
 
-      {/* Trust Strip */}
-      <div style={{
-        background: '#fff',
-        padding: '30px 0',
-        borderTop: '1px solid #E5E7EB',
-      }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap', textAlign: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6B7280', fontWeight: 600, fontSize: '14px' }}>
-            <span style={{ fontSize: '22px' }}>⚡</span> Instant Approval
+      {/* Trust Badges Banner */}
+      <div className="trust-badges-banner">
+        <div className="container badges-grid">
+          <div className="badge-item">
+            <div className="badge-icon-wrapper"><span className="badge-icon">⚡</span></div>
+            <h4>Instant Approval</h4>
+            <p>Get funds credited in minutes</p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6B7280', fontWeight: 600, fontSize: '14px' }}>
-            <span style={{ fontSize: '22px' }}>🛡️</span> Bank-Grade Security
+          <div className="badge-item">
+            <div className="badge-icon-wrapper"><span className="badge-icon">📱</span></div>
+            <h4>100% Digital</h4>
+            <p>Zero paperwork required</p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6B7280', fontWeight: 600, fontSize: '14px' }}>
-            <span style={{ fontSize: '22px' }}>📱</span> 100% Paperless
+          <div className="badge-item">
+            <div className="badge-icon-wrapper"><span className="badge-icon">🛡️</span></div>
+            <h4>Bank-Grade Security</h4>
+            <p>Your data is fully encrypted</p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6B7280', fontWeight: 600, fontSize: '14px' }}>
-            <span style={{ fontSize: '22px' }}>💰</span> Lowest EMIs
+          <div className="badge-item">
+            <div className="badge-icon-wrapper"><span className="badge-icon">💰</span></div>
+            <h4>Lowest EMIs</h4>
+            <p>Competitive interest rates</p>
           </div>
         </div>
       </div>
