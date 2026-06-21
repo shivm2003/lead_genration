@@ -61,7 +61,8 @@ function Calculator() {
     navigate('/application', { state: { prefilledAmount: amount } });
   };
 
-  const data = result;
+  // We can just use the live data directly.
+  const data = live;
   const maxBalance = data ? data.principal : 1;
 
   return (
@@ -104,7 +105,7 @@ function Calculator() {
           >
             EMI · Interest · Amortization
           </span>
-          <h1 style={{ fontSize: '46px', fontWeight: 800, marginBottom: '14px', letterSpacing: '-0.5px' }}>
+          <h1 className="calc-hero-title">
             Know your number before you sign anything.
           </h1>
           <p style={{ fontSize: '18px', opacity: 0.85, maxWidth: '620px', margin: '0 auto', lineHeight: 1.6 }}>
@@ -116,20 +117,9 @@ function Calculator() {
 
       {/* ============ CALCULATOR ============ */}
       <section className="section" style={{ backgroundColor: '#F0F4FF', padding: '56px 0' }}>
-        <div
-          className="container"
-          style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.1fr)', gap: '32px', alignItems: 'start' }}
-        >
+        <div className="container calc-grid">
           {/* LEFT: Inputs */}
-          <div
-            style={{
-              background: '#fff',
-              borderRadius: '20px',
-              padding: '36px',
-              boxShadow: '0 10px 40px rgba(30,58,95,0.08)',
-              border: '1px solid #E5E7EB',
-            }}
-          >
+          <div className="calc-panel">
             <h2 style={{ fontSize: '22px', fontWeight: 700, marginBottom: '6px', color: '#1E3A5F' }}>
               Loan details
             </h2>
@@ -241,16 +231,7 @@ function Calculator() {
           </div>
 
           {/* RIGHT: Results */}
-          <div
-            style={{
-              background: '#fff',
-              borderRadius: '20px',
-              padding: '36px',
-              boxShadow: '0 10px 40px rgba(30,58,95,0.08)',
-              border: '1px solid #E5E7EB',
-              minHeight: '460px',
-            }}
-          >
+          <div className="calc-panel" style={{ minHeight: '460px' }}>
             {!data ? (
               <div
                 style={{
@@ -490,7 +471,7 @@ function Calculator() {
 
       {/* ============ BOTTOM INFO STRIP ============ */}
       <div style={{ background: '#111827', color: '#D1D5DB', padding: '40px 0', textAlign: 'center' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '60px', flexWrap: 'wrap' }}>
+        <div className="container calc-bottom-info">
           <div>
             <p style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px', opacity: 0.7 }}>
               Interest rates from
@@ -501,7 +482,7 @@ function Calculator() {
             <p style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px', opacity: 0.7 }}>
               Max loan amount
             </p>
-            <p style={{ fontSize: '26px', fontWeight: 800, color: '#10B981' }}>₹50 lakh</p>
+            <p style={{ fontSize: '26px', fontWeight: 800, color: '#10B981' }}>₹10 Crore</p>
           </div>
           <div>
             <p style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px', opacity: 0.7 }}>
