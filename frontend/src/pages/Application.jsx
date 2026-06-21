@@ -14,7 +14,6 @@ const LOAN_TYPES = [
 function Application() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -23,21 +22,26 @@ function Application() {
     purpose: '',
     employment: '',
     city: '',
+    pincode: '',
   });
+  const [showLoanPopup, setShowLoanPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    let prefilledPurpose = '';
     if (location.state) {
+      prefilledPurpose = location.state.prefilledPurpose;
       setFormData(prev => ({
         ...prev,
         loanAmount: location.state.prefilledAmount || prev.loanAmount,
         purpose: location.state.prefilledPurpose || prev.purpose
       }));
-      // If purpose is prefilled, skip to step 2
-      if (location.state.prefilledPurpose) {
-        setStep(2);
-      }
+    }
+    
+    // Show popup immediately if no purpose is provided
+    if (!prefilledPurpose && !formData.purpose) {
+      setShowLoanPopup(true);
     }
   }, [location]);
 
@@ -47,7 +51,7 @@ function Application() {
 
   const selectLoanType = (type) => {
     setFormData({ ...formData, purpose: type });
-    setStep(2);
+    setShowLoanPopup(false);
   };
 
   const handleSubmit = async (e) => {
@@ -93,113 +97,41 @@ function Application() {
           <p style={{ fontSize: '18px', opacity: 0.85, maxWidth: '550px', margin: '0 auto' }}>
             Complete a quick application and get matched with the best offers from 50+ lending partners.
           </p>
-
-          {/* Step Indicator */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '28px' }}>
-            {[1, 2].map(s => (
-              <div key={s} style={{
-                width: s === step ? '48px' : '32px',
-                height: '6px',
-                borderRadius: '99px',
-                background: s === step ? '#F59E0B' : 'rgba(255,255,255,0.3)',
-                transition: 'all 0.3s ease',
-              }} />
-            ))}
-          </div>
         </div>
       </section>
 
       <section className="section" style={{ backgroundColor: '#F0F4FF', minHeight: '500px' }}>
         <div className="container" style={{ maxWidth: '800px', margin: '0 auto' }}>
 
-          {/* ======= STEP 1: Choose Loan Type ======= */}
-          {step === 1 && (
-            <div className="fade-in">
-              <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-                <h2 style={{ fontSize: '28px', fontWeight: 700, color: '#1E3A5F' }}>
-                  What type of loan are you looking for?
-                </h2>
-                <p style={{ color: '#6B7280', marginTop: '8px' }}>
-                  Select one to continue with your application.
-                </p>
-              </div>
-
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                gap: '16px',
-              }}>
-                {LOAN_TYPES.map(loan => (
-                  <button
-                    key={loan.value}
-                    onClick={() => selectLoanType(loan.value)}
-                    style={{
-                      background: formData.purpose === loan.value
-                        ? 'linear-gradient(135deg, #4F46E5, #7C3AED)'
-                        : '#fff',
-                      color: formData.purpose === loan.value ? '#fff' : '#1E3A5F',
-                      border: formData.purpose === loan.value
-                        ? '2px solid #4F46E5'
-                        : '2px solid #E5E7EB',
-                      borderRadius: '16px',
-                      padding: '24px 16px',
-                      cursor: 'pointer',
-                      textAlign: 'center',
-                      transition: 'all 0.25s ease',
-                      boxShadow: formData.purpose === loan.value
-                        ? '0 8px 24px rgba(79,70,229,0.3)'
-                        : '0 2px 8px rgba(0,0,0,0.04)',
-                    }}
-                    onMouseEnter={e => {
-                      if (formData.purpose !== loan.value) {
-                        e.currentTarget.style.borderColor = '#A5B4FC';
-                        e.currentTarget.style.transform = 'translateY(-3px)';
-                        e.currentTarget.style.boxShadow = '0 8px 20px rgba(79,70,229,0.12)';
-                      }
-                    }}
-                    onMouseLeave={e => {
-                      if (formData.purpose !== loan.value) {
-                        e.currentTarget.style.borderColor = '#E5E7EB';
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
-                      }
-                    }}
-                  >
-                    <div style={{ fontSize: '36px', marginBottom: '8px' }}>{loan.icon}</div>
-                    <div style={{ fontWeight: 700, fontSize: '16px' }}>{loan.value}</div>
-                    <div style={{
-                      fontSize: '12px',
-                      marginTop: '4px',
-                      opacity: 0.7,
-                      color: formData.purpose === loan.value ? '#E0E7FF' : '#6B7280',
-                    }}>{loan.desc}</div>
-                  </button>
-                ))}
-              </div>
+          {/* ======= FORM VIEW ======= */}
+          <div className="fade-in">
+            {/* Selected Loan Badge */}
+            <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'linear-gradient(135deg, #4F46E5, #7C3AED)',
+                color: '#fff',
+                padding: '10px 24px',
+                borderRadius: '99px',
+                fontWeight: 700,
+                fontSize: '15px',
+                cursor: 'pointer',
+              }} onClick={() => setShowLoanPopup(true)}>
+                {formData.purpose ? (
+                  <>
+                    {LOAN_TYPES.find(l => l.value === formData.purpose)?.icon} {formData.purpose}
+                    <span style={{ opacity: 0.7, fontSize: '13px' }}>✏️ Change</span>
+                  </>
+                ) : (
+                  <>
+                    📋 Select Loan Type
+                    <span style={{ opacity: 0.7, fontSize: '13px' }}>✏️ Click here</span>
+                  </>
+                )}
+              </span>
             </div>
-          )}
-
-          {/* ======= STEP 2: Fill Details ======= */}
-          {step === 2 && (
-            <div className="fade-in">
-              {/* Selected Loan Badge */}
-              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-                <span style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  background: 'linear-gradient(135deg, #4F46E5, #7C3AED)',
-                  color: '#fff',
-                  padding: '10px 24px',
-                  borderRadius: '99px',
-                  fontWeight: 700,
-                  fontSize: '15px',
-                  cursor: 'pointer',
-                }} onClick={() => setStep(1)}>
-                  {LOAN_TYPES.find(l => l.value === formData.purpose)?.icon} {formData.purpose}
-                  <span style={{ opacity: 0.7, fontSize: '13px' }}>✏️ Change</span>
-                </span>
-              </div>
 
               <div style={{
                 background: '#fff',
@@ -278,21 +210,21 @@ function Application() {
                     </div>
                   </div>
 
-                  {/* Row 3: Loan Amount + Employment */}
+                  {/* Row 3: Pincode + Employment */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                     <div className="form-group">
-                      <label htmlFor="loanAmount" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ fontSize: '18px' }}>💰</span> Desired Loan Amount (₹) <span style={{ color: '#EF4444' }}>*</span>
+                      <label htmlFor="pincode" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '18px' }}>📮</span> Pincode <span style={{ color: '#EF4444' }}>*</span>
                       </label>
                       <input
-                        type="number"
-                        name="loanAmount"
-                        id="loanAmount"
-                        placeholder="5,00,000"
-                        value={formData.loanAmount}
+                        type="text"
+                        name="pincode"
+                        id="pincode"
+                        placeholder="400001"
+                        value={formData.pincode}
                         onChange={handleChange}
                         required
-                        min="1000"
+                        maxLength="6"
                       />
                     </div>
                     <div className="form-group">
@@ -313,6 +245,25 @@ function Application() {
                         <option value="Student">Student</option>
                         <option value="Other">Other</option>
                       </select>
+                    </div>
+                  </div>
+
+                  {/* Row 4: Loan Amount */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginTop: '20px' }}>
+                    <div className="form-group">
+                      <label htmlFor="loanAmount" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '18px' }}>💰</span> Desired Loan Amount (₹) <span style={{ color: '#EF4444' }}>*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="loanAmount"
+                        id="loanAmount"
+                        placeholder="5,00,000"
+                        value={formData.loanAmount}
+                        onChange={handleChange}
+                        required
+                        min="1000"
+                      />
                     </div>
                   </div>
 
@@ -351,23 +302,7 @@ function Application() {
                   🔒 Your information is encrypted and secure. We never share your data without consent.
                 </p>
               </div>
-
-              {/* Go Back link */}
-              <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                <button onClick={() => setStep(1)} style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#4F46E5',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontSize: '15px',
-                  textDecoration: 'underline',
-                }}>
-                  ← Back to Loan Type Selection
-                </button>
-              </div>
             </div>
-          )}
         </div>
       </section>
 
@@ -396,6 +331,93 @@ function Application() {
           </div>
         </div>
       </div>
+
+      {/* LOAN TYPE POPUP OVERLAY */}
+      {showLoanPopup && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.6)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px',
+          backdropFilter: 'blur(4px)'
+        }}>
+          <div className="fade-in" style={{
+            background: '#fff',
+            borderRadius: '20px',
+            padding: '30px',
+            maxWidth: '700px',
+            width: '100%',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            position: 'relative',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+          }}>
+            <button 
+              onClick={() => setShowLoanPopup(false)}
+              style={{
+                position: 'absolute', top: '16px', right: '16px',
+                background: '#F3F4F6', border: 'none', borderRadius: '50%',
+                width: '36px', height: '36px', fontSize: '18px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#4B5563'
+              }}
+            >
+              ✕
+            </button>
+            <div style={{ textAlign: 'center', marginBottom: '24px', marginTop: '10px' }}>
+              <h2 style={{ fontSize: '26px', fontWeight: 800, color: '#1E3A5F' }}>
+                Select Your Loan Type
+              </h2>
+              <p style={{ color: '#6B7280', marginTop: '8px', fontSize: '15px' }}>
+                Choose the type of loan you are applying for to continue.
+              </p>
+            </div>
+            
+            <div className="loan-type-grid">
+              {LOAN_TYPES.map(loan => (
+                <button
+                  key={loan.value}
+                  type="button"
+                  onClick={() => selectLoanType(loan.value)}
+                  style={{
+                    background: formData.purpose === loan.value ? 'linear-gradient(135deg, #4F46E5, #7C3AED)' : '#F9FAFB',
+                    color: formData.purpose === loan.value ? '#fff' : '#1E3A5F',
+                    border: formData.purpose === loan.value ? '2px solid #4F46E5' : '2px solid #E5E7EB',
+                    borderRadius: '16px',
+                    padding: '20px 12px',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={e => {
+                    if (formData.purpose !== loan.value) {
+                      e.currentTarget.style.borderColor = '#A5B4FC';
+                      e.currentTarget.style.background = '#fff';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (formData.purpose !== loan.value) {
+                      e.currentTarget.style.borderColor = '#E5E7EB';
+                      e.currentTarget.style.background = '#F9FAFB';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }
+                  }}
+                >
+                  <div style={{ fontSize: '32px', marginBottom: '8px' }}>{loan.icon}</div>
+                  <div style={{ fontWeight: 700, fontSize: '14px' }}>{loan.value}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

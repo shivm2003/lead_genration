@@ -1125,3 +1125,27 @@ body {
     gap: 24px;
   }
 }
+
+/* Loan Type Grid */
+.loan-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .loan-type-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .loan-type-grid button {
+    padding: 12px 8px !important;
+  }
+  .loan-type-grid button > div:first-child {
+    font-size: 24px !important;
+    margin-bottom: 4px !important;
+  }
+  .loan-type-grid button > div:last-child {
+    font-size: 13px !important;
+  }
+}

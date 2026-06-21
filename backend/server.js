@@ -21,20 +21,20 @@ app.get('/api/status', (req, res) => {
 // Route: Create a new lead
 app.post('/api/leads', async (req, res) => {
   try {
-    const { fullName, email, phone, loanAmount, purpose } = req.body;
+    const { fullName, email, phone, loanAmount, purpose, city, pincode, employment } = req.body;
 
     // Validate required fields (email is optional)
-    if (!fullName || !phone || !loanAmount || !purpose) {
-      return res.status(400).json({ error: 'Name, phone, loan amount, and loan type are required.' });
+    if (!fullName || !phone || !loanAmount || !purpose || !pincode) {
+      return res.status(400).json({ error: 'Name, phone, loan amount, loan type, and pincode are required.' });
     }
 
     const insertQuery = `
-      INSERT INTO leads (full_name, email, phone, loan_amount, purpose)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO leads (full_name, email, phone, loan_amount, purpose, address, pincode, employment)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING id;
     `;
     
-    const values = [fullName, email, phone, loanAmount, purpose];
+    const values = [fullName, email || '', phone, loanAmount, purpose, city || '', pincode, employment || ''];
     const result = await pool.query(insertQuery, values);
 
     res.status(201).json({ 
