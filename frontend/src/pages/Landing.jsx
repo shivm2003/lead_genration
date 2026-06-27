@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Landing.css';
 
@@ -64,60 +64,6 @@ function Landing() {
   const [openFaq, setOpenFaq] = useState(0);
   const navigate = useNavigate();
 
-  // Mobile-specific state
-  const [isMobile, setIsMobile] = useState(false);
-  const [showBottomSheet, setShowBottomSheet] = useState(false);
-  const [sheetClosing, setSheetClosing] = useState(false);
-  const [formRevealed, setFormRevealed] = useState(false);
-  const [sheetDismissed, setSheetDismissed] = useState(false);
-  const stubRef = useRef(null);
-
-  // Detect mobile on mount & resize
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-      if (mobile && !sheetDismissed) {
-        // Small delay so page renders first, then sheet slides up
-        setTimeout(() => setShowBottomSheet(true), 600);
-      }
-      if (!mobile) {
-        setShowBottomSheet(false);
-        setFormRevealed(true); // always show on desktop
-      }
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Scroll listener — reveal form after 300px on mobile
-  useEffect(() => {
-    if (!isMobile) {
-      setFormRevealed(true);
-      return;
-    }
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setFormRevealed(true);
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Check initial position
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMobile]);
-
-  // Close bottom sheet with animation
-  const dismissSheet = () => {
-    setSheetClosing(true);
-    setTimeout(() => {
-      setShowBottomSheet(false);
-      setSheetClosing(false);
-      setSheetDismissed(true);
-    }, 400);
-  };
-
   const handleQuickLead = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -170,10 +116,7 @@ function Landing() {
             </ul>
           </div>
 
-          <div
-            ref={stubRef}
-            className={`ls-stub${isMobile ? (formRevealed ? ' ls-stub--mobile-revealed' : ' ls-stub--mobile-hidden') : ''}`}
-          >
+          <div className="ls-stub">
             <div className="ls-stub-top">
               <span className="ls-stub-label">Eligibility Pass</span>
               <span className="ls-stub-no">No. 0042</span>
@@ -469,60 +412,7 @@ function Landing() {
         </div>
       </section>
 
-      {/* ===== MOBILE BOTTOM SHEET POPUP ===== */}
-      {showBottomSheet && (
-        <>
-          <div
-            className={`ls-sheet-backdrop ${!sheetClosing ? 'is-visible' : ''}`}
-            onClick={dismissSheet}
-          />
-          <div className={`ls-bottom-sheet ${sheetClosing ? 'is-closing' : 'is-open'}`}>
-            <div className="ls-sheet-handle" />
-            <div className="ls-sheet-header">
-              <h3 className="ls-sheet-title">What loan do you need?</h3>
-              <button className="ls-sheet-close" onClick={dismissSheet} aria-label="Close">✕</button>
-            </div>
-            <p className="ls-sheet-subtitle">Tap to explore rates and apply instantly.</p>
-            <div className="ls-sheet-grid">
-              {LOAN_PRODUCTS.map((p) => (
-                <Link
-                  to={p.to}
-                  className="ls-sheet-option"
-                  key={p.id}
-                  onClick={dismissSheet}
-                >
-                  <span className="ls-sheet-option-icon">{p.icon}</span>
-                  <span className="ls-sheet-option-title">{p.title}</span>
-                  <span className="ls-sheet-option-rate">from {p.rate}</span>
-                </Link>
-              ))}
-            </div>
-            <div className="ls-sheet-footer">
-              <p className="ls-sheet-footer-text">
-                Compare offers from 50+ banks & NBFCs — zero hidden fees.
-              </p>
-            </div>
-          </div>
-        </>
-      )}
 
-      {/* ===== MOBILE FLOATING CTA ===== */}
-      {isMobile && sheetDismissed && (
-        <button
-          className={`ls-mobile-fab ${showBottomSheet ? 'ls-mobile-fab--hidden' : ''}`}
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            // Small delay to let scroll start, then navigate to form
-            setTimeout(() => {
-              if (stubRef.current) {
-                stubRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }
-            }, 300);
-          }}
-        >
-          📝 Apply Now
-        </button>
-      )}
 
     </div>
   );

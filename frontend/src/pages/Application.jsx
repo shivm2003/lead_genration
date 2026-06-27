@@ -392,15 +392,14 @@ function Application() {
         </div>
       )}
 
-      {/* ===== MOBILE BOTTOM SHEET FOR LOAN TYPES ===== */}
+      {/* ===== MOBILE TOP SHEET FOR LOAN TYPES ===== */}
       {showMobileSheet && (
         <>
           <div
             className={`app-sheet-backdrop ${!sheetClosing ? 'is-visible' : ''}`}
             onClick={dismissMobileSheet}
           />
-          <div className={`app-bottom-sheet ${sheetClosing ? 'is-closing' : 'is-open'}`}>
-            <div className="app-sheet-handle" />
+          <div className={`app-top-sheet ${sheetClosing ? 'is-closing' : 'is-open'}`}>
             <div className="app-sheet-header">
               <h3 className="app-sheet-title">Select Your Loan Type</h3>
               <button className="app-sheet-close" onClick={dismissMobileSheet}>✕</button>
@@ -420,6 +419,7 @@ function Application() {
                 </button>
               ))}
             </div>
+            <div className="app-sheet-handle" />
           </div>
         </>
       )}
