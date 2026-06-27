@@ -1,4 +1,5 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import Landing from './pages/Landing';
 import Calculator from './pages/Calculator';
 import Application from './pages/Application';
@@ -11,17 +12,50 @@ import VehicleLoan from './pages/VehicleLoan';
 import GoldLoan from './pages/GoldLoan';
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
   return (
     <>
       <nav className="navbar">
         <div className="container nav-content">
-          <Link to="/">
+          <Link to="/" onClick={() => setMenuOpen(false)}>
             <img src="/Logo.png" alt="Loansolutions Logo" className="logo-img" />
           </Link>
-          <div className="nav-links">
-            <Link to="/">Home</Link>
-            <Link to="/calculator">Calculator</Link>
-            <Link to="/application" className="btn btn-primary nav-btn">Apply Now</Link>
+
+          {/* Hamburger button — mobile only */}
+          <button
+            className={`nav-hamburger ${menuOpen ? 'is-active' : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+          >
+            <span className="hamburger-line" />
+            <span className="hamburger-line" />
+            <span className="hamburger-line" />
+          </button>
+
+          {/* Desktop nav links + mobile overlay */}
+          {menuOpen && <div className="nav-overlay" onClick={() => setMenuOpen(false)} />}
+          <div className={`nav-links ${menuOpen ? 'is-open' : ''}`}>
+            <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+            <Link to="/calculator" onClick={() => setMenuOpen(false)}>Calculator</Link>
+            <Link to="/application" className="btn btn-primary nav-btn" onClick={() => setMenuOpen(false)}>Apply Now</Link>
           </div>
         </div>
       </nav>

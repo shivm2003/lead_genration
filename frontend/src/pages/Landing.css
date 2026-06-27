@@ -851,3 +851,249 @@
         align-items: flex-start;
     }
 }
+
+/* ================================================================
+   MOBILE BOTTOM SHEET, SCROLL-GATED FORM & FLOATING CTA
+   Only applies at ≤768px (mobile devices)
+   ================================================================ */
+
+/* ---------- BACKDROP OVERLAY ---------- */
+.ls-sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(22, 33, 62, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.ls-sheet-backdrop.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ---------- BOTTOM SHEET ---------- */
+.ls-bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--paper, #FBF7EE);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.25);
+    padding: 0 20px 28px;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    max-height: 85vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ls-bottom-sheet.is-open {
+    transform: translateY(0);
+}
+
+.ls-bottom-sheet.is-closing {
+    transform: translateY(100%);
+}
+
+/* Drag handle bar */
+.ls-sheet-handle {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0 8px;
+    cursor: grab;
+}
+
+.ls-sheet-handle::after {
+    content: '';
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: #C9C0A8;
+}
+
+/* Sheet header */
+.ls-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.ls-sheet-title {
+    font-family: var(--font-display, 'Fraunces', serif);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink, #16213E);
+    margin: 0;
+}
+
+.ls-sheet-subtitle {
+    font-size: 13px;
+    color: #6B6248;
+    margin: 0 0 18px;
+    line-height: 1.5;
+}
+
+.ls-sheet-close {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--paper-line, #E2D9C3);
+    background: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--ink, #16213E);
+    transition: background 0.15s ease, border-color 0.15s ease;
+    flex-shrink: 0;
+}
+
+.ls-sheet-close:hover {
+    background: #F5F0E4;
+    border-color: var(--gold, #C8932B);
+}
+
+/* Loan option grid inside sheet */
+.ls-sheet-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.ls-sheet-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 18px 10px 14px;
+    background: #fff;
+    border: 1.5px solid var(--paper-line, #E2D9C3);
+    border-radius: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--ink, #16213E);
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ls-sheet-option:active {
+    transform: scale(0.96);
+    border-color: var(--gold, #C8932B);
+    box-shadow: 0 4px 16px rgba(200, 147, 43, 0.18);
+}
+
+.ls-sheet-option-icon {
+    font-size: 30px;
+    line-height: 1;
+}
+
+.ls-sheet-option-title {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.ls-sheet-option-rate {
+    font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+    font-size: 11px;
+    color: var(--gold-deep, #A8761E);
+    font-weight: 600;
+}
+
+/* Bottom sheet footer */
+.ls-sheet-footer {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.ls-sheet-footer-text {
+    font-size: 11px;
+    color: #948A6C;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* ---------- SCROLL-GATED FORM (MOBILE) ---------- */
+@media (max-width: 768px) {
+    .ls-stub--mobile-hidden {
+        opacity: 0;
+        transform: translateY(40px);
+        pointer-events: none;
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .ls-stub--mobile-revealed {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+}
+
+/* ---------- FLOATING CTA BUTTON (MOBILE) ---------- */
+.ls-mobile-fab {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .ls-mobile-fab {
+        display: flex;
+        position: fixed;
+        bottom: 20px;
+        right: 16px;
+        z-index: 998;
+        background: var(--gold, #C8932B);
+        color: var(--ink, #16213E);
+        border: none;
+        border-radius: 56px;
+        padding: 14px 22px;
+        font-family: var(--font-body, 'Inter', sans-serif);
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: 0 6px 24px rgba(200, 147, 43, 0.4);
+        align-items: center;
+        gap: 8px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+        animation: ls-fab-entrance 0.5s cubic-bezier(0.32, 0.72, 0, 1) both;
+    }
+
+    .ls-mobile-fab:active {
+        transform: scale(0.95);
+    }
+
+    .ls-mobile-fab--hidden {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
+    }
+
+    @keyframes ls-fab-entrance {
+        from {
+            opacity: 0;
+            transform: translateY(24px) scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* Hide the bottom-sheet and backdrop on desktop entirely */
+}
+
+/* Hide bottom-sheet & backdrop on desktop */
+@media (min-width: 769px) {
+    .ls-bottom-sheet,
+    .ls-sheet-backdrop {
+        display: none !important;
+    }
+}
