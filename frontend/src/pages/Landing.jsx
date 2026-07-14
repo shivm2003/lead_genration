@@ -78,6 +78,7 @@ function Landing() {
           phone: phone,
           loanAmount: amount,
           purpose: 'General',
+          pincode: '000000',
         }),
       });
       if (response.ok) {

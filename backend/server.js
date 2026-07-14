@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const https = require('https');
 const cors = require('cors');
 require('dotenv').config();
 const { pool, initializeDatabase } = require('./db');
@@ -16,6 +17,11 @@ initializeDatabase();
 // Route: API Status
 app.get('/api/status', (req, res) => {
   res.json({ status: 'ok', message: 'Loansolutions API is running' });
+});
+
+// Route: Health Check (for keep-alive)
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
 });
 
 // Route: Create a new lead
@@ -59,4 +65,14 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  
+  // Keep the server alive by pinging the /health endpoint every 5 minutes
+  const KEEP_ALIVE_URL = process.env.KEEP_ALIVE_URL || 'https://lead-genration-1.onrender.com/health';
+  setInterval(() => {
+    https.get(KEEP_ALIVE_URL, (res) => {
+      console.log(`Keep-alive ping sent to ${KEEP_ALIVE_URL}. Status: ${res.statusCode}`);
+    }).on('error', (err) => {
+      console.error(`Error during keep-alive ping: ${err.message}`);
+    });
+  }, 5 * 60 * 1000); // 5 minutes
 });
