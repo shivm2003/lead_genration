@@ -62,12 +62,16 @@ function Landing() {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
+  const [quickError, setQuickError] = useState('');
   const navigate = useNavigate();
 
   const handleQuickLead = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setQuickError('');
     try {
+      const cleanAmount = String(amount).replace(/[^0-9.]/g, '');
+      const cleanPhone = String(phone).trim();
       const API_URL = import.meta.env.VITE_API_URL || '';
       const response = await fetch(`${API_URL}/api/leads`, {
         method: 'POST',
@@ -75,17 +79,23 @@ function Landing() {
         body: JSON.stringify({
           fullName: 'Quick Lead',
           email: 'pending@user.com',
-          phone: phone,
-          loanAmount: amount,
+          phone: cleanPhone,
+          loanAmount: cleanAmount || amount,
           purpose: 'General',
           pincode: '000000',
         }),
       });
+
+      const data = await response.json().catch(() => ({}));
+
       if (response.ok) {
         navigate('/success');
+      } else {
+        setQuickError(data.error || 'Failed to submit. Please try again.');
       }
     } catch (err) {
       console.error(err);
+      setQuickError('Network error. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -146,6 +156,11 @@ function Landing() {
                   required
                 />
               </div>
+              {quickError && (
+                <div style={{ color: '#EF4444', fontSize: '13px', marginBottom: '12px', fontWeight: 600 }}>
+                  ⚠️ {quickError}
+                </div>
+              )}
               <button type="submit" className="ls-btn ls-btn--gold" disabled={loading}>
                 {loading ? 'Processing…' : 'Unlock best offers'}
               </button>

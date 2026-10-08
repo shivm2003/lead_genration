@@ -27,20 +27,36 @@ app.get('/health', (req, res) => {
 // Route: Create a new lead
 app.post('/api/leads', async (req, res) => {
   try {
-    const { fullName, email, phone, loanAmount, purpose, city, pincode, employment } = req.body;
+    const { fullName, email, phone, loanAmount, purpose, city, pincode, employment, promoCode } = req.body;
 
-    // Validate required fields (email is optional)
+    // Validate required fields (email and promoCode are optional)
     if (!fullName || !phone || !loanAmount || !purpose || !pincode) {
       return res.status(400).json({ error: 'Name, phone, loan amount, loan type, and pincode are required.' });
     }
 
+    // Clean loan amount: remove commas, ₹ currency symbols, spaces
+    const cleanAmount = String(loanAmount).replace(/[^0-9.]/g, '');
+    if (!cleanAmount || isNaN(Number(cleanAmount)) || Number(cleanAmount) <= 0) {
+      return res.status(400).json({ error: 'Please enter a valid numeric loan amount.' });
+    }
+
     const insertQuery = `
-      INSERT INTO leads (full_name, email, phone, loan_amount, purpose, address, pincode, employment)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO leads (full_name, email, phone, loan_amount, purpose, address, pincode, employment, promo_code)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING id;
     `;
     
-    const values = [fullName, email || '', phone, loanAmount, purpose, city || '', pincode, employment || ''];
+    const values = [
+      String(fullName).trim(),
+      email ? String(email).trim() : '',
+      String(phone).trim(),
+      Number(cleanAmount),
+      String(purpose).trim(),
+      city ? String(city).trim() : '',
+      String(pincode).trim(),
+      employment ? String(employment).trim() : '',
+      promoCode ? String(promoCode).trim() : ''
+    ];
     const result = await pool.query(insertQuery, values);
 
     res.status(201).json({ 
@@ -51,7 +67,7 @@ app.post('/api/leads', async (req, res) => {
 
   } catch (error) {
     console.error('Error creating lead:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 

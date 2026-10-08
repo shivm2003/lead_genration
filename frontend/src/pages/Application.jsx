@@ -24,6 +24,7 @@ function Application() {
     employment: '',
     city: '',
     pincode: '',
+    promoCode: '',
   });
   const [showLoanPopup, setShowLoanPopup] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -298,22 +299,39 @@ function Application() {
                 </div>
               </div>
 
-              {/* Loan Amount */}
-              <div className="app-form-group app-form-group--full">
-                <label htmlFor="loanAmount">
-                  <span className="app-form-label-icon">💰</span>
-                  Desired Loan Amount (₹) <span className="app-form-req">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="loanAmount"
-                  id="loanAmount"
-                  placeholder="5,00,000"
-                  value={formData.loanAmount}
-                  onChange={handleChange}
-                  required
-                  min="1000"
-                />
+              {/* Row 4: Loan Amount + Promo Code */}
+              <div className="app-form-row">
+                <div className="app-form-group">
+                  <label htmlFor="loanAmount">
+                    <span className="app-form-label-icon">💰</span>
+                    Desired Loan Amount (₹) <span className="app-form-req">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="loanAmount"
+                    id="loanAmount"
+                    placeholder="5,00,000"
+                    value={formData.loanAmount}
+                    onChange={handleChange}
+                    required
+                    min="1000"
+                  />
+                </div>
+                <div className="app-form-group">
+                  <label htmlFor="promoCode">
+                    <span className="app-form-label-icon">🏷️</span>
+                    Promo Code <span className="app-form-optional">(Optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="promoCode"
+                    id="promoCode"
+                    placeholder="e.g. SAVE2026"
+                    value={formData.promoCode}
+                    onChange={handleChange}
+                    style={{ textTransform: 'uppercase' }}
+                  />
+                </div>
               </div>
 
               {error && (

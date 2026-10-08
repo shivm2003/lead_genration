@@ -30,6 +30,7 @@ const initializeDatabase = async () => {
       pincode VARCHAR(20),
       address VARCHAR(255),
       employment VARCHAR(100),
+      promo_code VARCHAR(100),
       status VARCHAR(50) DEFAULT 'pending',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
@@ -39,7 +40,8 @@ const initializeDatabase = async () => {
     ALTER TABLE leads 
     ADD COLUMN IF NOT EXISTS pincode VARCHAR(20),
     ADD COLUMN IF NOT EXISTS address VARCHAR(255),
-    ADD COLUMN IF NOT EXISTS employment VARCHAR(100);
+    ADD COLUMN IF NOT EXISTS employment VARCHAR(100),
+    ADD COLUMN IF NOT EXISTS promo_code VARCHAR(100);
   `;
 
   try {
