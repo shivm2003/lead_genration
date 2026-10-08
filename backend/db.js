@@ -1,5 +1,15 @@
+const net = require('net');
+const dns = require('dns');
 const { Pool } = require('pg');
 require('dotenv').config();
+
+// Ensure Node.js prioritizes IPv4 to prevent Happy Eyeballs ETIMEDOUT on IPv6
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
+if (net.setDefaultAutoSelectFamily) {
+  net.setDefaultAutoSelectFamily(false);
+}
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -31,11 +41,14 @@ const initializeDatabase = async () => {
     ADD COLUMN IF NOT EXISTS address VARCHAR(255),
     ADD COLUMN IF NOT EXISTS employment VARCHAR(100);
   `;
-  
+
   try {
     await pool.query(queryText);
     await pool.query(alterText);
-    console.log("Database initialized: 'leads' table is ready with updated schema.");
+
+    console.log(
+      "Database initialized: 'leads' table is ready with updated schema."
+    );
   } catch (err) {
     console.error("Error initializing database:", err);
   }
